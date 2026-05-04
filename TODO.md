@@ -11,28 +11,27 @@
 
 - [x] `git switch -c feat/project-bootstrap`
 - [x] `README.md` — 사용법 문서
-- [x] `CLAUDE.md` — 프로젝트 헌장
+- [x] `CLAUDE.md` — 프로젝트 헌장 (자율 워크플로우 §9 포함)
 - [x] `TODO.md` — 본 파일
 - [x] `docs/superpowers/specs/2026-05-04-claude-ppt-design.md` — 설계 사본
-- [x] 빈 `claude_ppt/` 디렉토리 (`.gitkeep`)
-- [x] 빈 `tests/` 디렉토리 (`.gitkeep`)
-- [ ] PR 생성 → 리뷰 → main 머지
-- [ ] `phase-0-done` 태그
+- [x] 빈 `claude_ppt/` 디렉토리 (`.gitkeep`, Phase 1에서 실제 모듈로 교체됨)
+- [x] 빈 `tests/` 디렉토리 (`.gitkeep`, Phase 1에서 실제 테스트로 교체됨)
+- [x] PR #1 생성 → 머지 (squash, branch deleted)
 
 ---
 
 ## Phase 1 — 파이썬 변환기 골격
 
-- [ ] 브랜치: `feat/pptx-renderer-skeleton`
-- [ ] `pyproject.toml` 생성 (Python ≥ 3.10, `python-pptx`, `pytest`, uv 호환)
-- [ ] `claude_ppt/__init__.py`
-- [ ] `claude_ppt/theme.py` — `SKILL.md` §B 컬러 상수 미러 (RGB tuple)
-- [ ] `claude_ppt/render.py` — argparse CLI 진입점, outline.json 로드, 빈 .pptx 산출
-- [ ] `tests/fixtures/sample-outline.json` — hero-cards 1장만 담긴 최소 픽스처
-- [ ] `tests/test_render.py::test_empty_pptx_round_trip` — RED → GREEN
-- [ ] `claude_ppt/layouts/__init__.py` + 디스패처 (layout 문자열 → 함수 매핑)
-- [ ] `claude_ppt/layouts/hero_cards.py` — TDD로 첫 레이아웃 (실패 테스트 → 구현)
-- [ ] `pytest -q` 전체 통과
+- [x] 브랜치: `feat/pptx-renderer-skeleton`
+- [x] `pyproject.toml` 생성 (Python ≥ 3.10, `python-pptx`, `pytest`, hatchling 빌드)
+- [x] `claude_ppt/__init__.py`
+- [x] `claude_ppt/theme.py` — `SKILL.md` §B 컬러 상수 미러 (`RGBColor`)
+- [x] `claude_ppt/render.py` — argparse CLI 진입점, outline.json 로드, 16:9 다크 슬라이드 생성
+- [x] `tests/fixtures/sample-outline.json` — hero-cards 1장 최소 픽스처
+- [x] `tests/test_render.py` — 4개 테스트 (RED → GREEN 확인)
+- [x] `claude_ppt/layouts/__init__.py` + 디스패처
+- [x] `claude_ppt/layouts/hero_cards.py` — 첫 레이아웃, TDD 사이클 완료
+- [x] `pytest -q` 전체 통과 (4 passed)
 - [ ] PR → 머지 → `phase-1-done` 태그
 
 ---
