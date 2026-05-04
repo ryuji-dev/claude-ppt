@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from claude_ppt.html_render import render_html_set
+from claude_ppt.html_render import main as html_main, render_html_set, render_to_dir
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -106,3 +106,25 @@ def test_unknown_layout_raises(sample_outline: dict) -> None:
     sample_outline["slides"][0]["layout"] = "no-such-layout"
     with pytest.raises(ValueError, match="no-such-layout"):
         render_html_set(sample_outline)
+
+
+def test_render_to_dir_writes_index_at_root_and_slides_in_subdir(
+    tmp_path: pytest.TempPathFactory, sample_outline: dict
+) -> None:
+    out = tmp_path / "out"
+    render_to_dir(sample_outline, out)
+    assert (out / "index.html").exists()
+    slides_dir = out / "slides"
+    for slide in sample_outline["slides"]:
+        assert (slides_dir / f"{slide['n']:02d}-{slide['slug']}.html").exists()
+
+
+def test_html_cli_writes_files(tmp_path, sample_outline: dict) -> None:
+    outline_path = tmp_path / "outline.json"
+    outline_path.write_text(json.dumps(sample_outline, ensure_ascii=False), encoding="utf-8")
+    out_dir = tmp_path / "out"
+    rc = html_main([str(outline_path), str(out_dir)])
+    assert rc == 0
+    assert (out_dir / "index.html").exists()
+    first = sample_outline["slides"][0]
+    assert (out_dir / "slides" / f"{first['n']:02d}-{first['slug']}.html").exists()
