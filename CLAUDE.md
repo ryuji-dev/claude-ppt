@@ -61,6 +61,7 @@ YouTube 영상 요약 텍스트 → **HTML 슬라이드 세트 + 편집 가능�
 - **`main` 직접 푸시 금지**. 모든 변경은 PR을 통과한다.
 - PR은 `superpowers:finishing-a-development-branch` 스킬 또는 `gh pr create`로 자동 생성.
 - PR 본문은 ## Summary, ## Test plan 두 섹션을 포함.
+- **커밋 메시지에 `Co-Authored-By` 트레일러를 넣지 않는다.** AI 모델 식별자를 커밋 저자로 명시하지 않는다. 본 레포의 모든 작업은 *사용자 본인의 작업*으로 기록된다.
 
 ---
 
