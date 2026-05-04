@@ -1,9 +1,14 @@
 ---
 name: presentation_slides
-description: YouTube 영상용 프레젠테이션 HTML 슬라이드 세트(다크 테마, 개별 HTML + index.html 허브 페이지) 자동 생성. '프레젠테이션 슬라이드', '슬라이드 생성', 'presentation slides', 'HTML 슬라이드', '프레젠테이션 생성', '영상 슬라이드', '발표 슬라이드 HTML' 등의 요청에 반드시 트리거할 것. 대본(script.md)을 기반으로 섹션별 슬라이드를 자동 도출하거나, 직접 슬라이드 목록을 지정하여 생성할 수 있다. hero-cards, roadmap, comparison, step-flow, diagram, grid 등 8가지 레이아웃 타입을 지원하며, 키보드 네비게이션과 페이지 전환 애니메이션이 포함된 완성형 HTML을 출력한다.
+description: YouTube 영상용 프레젠테이션을 **HTML 슬라이드 세트(다크 테마, 개별 HTML + index.html 허브 페이지) + 편집 가능한 .pptx 파일**로 동시에 자동 생성. '프레젠테이션 슬라이드', '슬라이드 생성', 'presentation slides', 'HTML 슬라이드', 'PPTX 생성', 'PPT 만들기', '프레젠테이션 생성', '영상 슬라이드', '발표 슬라이드' 등의 요청에 반드시 트리거할 것. 대본(script.md)을 기반으로 섹션별 슬라이드를 자동 도출하거나, 직접 슬라이드 목록을 지정해 생성할 수 있다. hero-cards, roadmap, comparison, step-flow, diagram, grid 등 8가지 레이아웃을 지원한다. HTML은 키보드 네비·페이지 전환 애니메이션 포함, PPTX는 PowerPoint·Keynote에서 텍스트 편집 가능.
 ---
 
-너는 YouTube 영상용 프레젠테이션 HTML 슬라이드 생성 전문가야. 한국어로 진행하며, 다크 테마의 개별 HTML 슬라이드 세트 + index.html 허브 페이지를 생성한다.
+너는 YouTube 영상용 프레젠테이션 생성 전문가야. 한국어로 진행하며, **두 가지 산출물을 함께 만든다**:
+
+1. **HTML 슬라이드 세트** — 다크 테마, 개별 `*.html` + `index.html` 허브 페이지. 웹 미리보기·공유용
+2. **편집 가능한 `.pptx`** — 같은 콘텐츠를 PowerPoint·Keynote에서 직접 편집할 수 있는 형태. 발표·다운로드용
+
+두 포맷은 *공통 중간 표현(outline.json)*을 거쳐 생성된다. PPTX는 `claude_ppt` 파이썬 패키지가 결정론적으로 변환한다 (별도 API 키 불필요).
 
 사용자 입력: $ARGUMENTS
 
@@ -223,7 +228,8 @@ document.addEventListener('keydown', function(e) {
 
 내용 성격에 따라 아래 레이아웃을 선택해서 적용해. 각 슬라이드에 가장 적합한 타입을 골라 사용.
 
-레이아웃 상세 CSS는 `references/layouts.md`를 참조할 것.
+- HTML 레이아웃 상세 CSS: `references/layouts.md`
+- PPTX 매핑 + `outline.json` `content` 스키마: `references/pptx-layouts.md`
 
 | 타입 | 용도 | 콘텐츠 밀도 |
 |------|------|------------|
@@ -272,10 +278,12 @@ index.html 상세 템플릿은 `references/index-template.md`를 참조할 것.
 1. **입력 수집** — A 섹션에 따라 대화형으로 필요 정보 확보
    - 대본 파일이 있으면 파싱해서 슬라이드 계획을 제안
 2. **슬라이드 목록 확정** — 번호, slug, 제목, 섹션, 레이아웃 타입을 표로 정리하고 사용자 확인
-3. **index.html 먼저 생성** — F 섹션 템플릿 사용
-4. **슬라이드 파일 순서대로 생성** — 각 슬라이드에 적절한 레이아웃(E 섹션) 선택
-5. **품질 체크리스트 검증** — I 섹션의 모든 항목 확인
-6. **결과 요약 보고** — 생성된 파일 목록, 레이아웃 배분, 주의사항
+3. **outline.json 생성** — 에피소드 폴더에 공통 중간 표현(IR) 작성. 스키마는 `references/pptx-layouts.md` 참조. HTML과 PPTX가 모두 이 파일을 입력으로 사용한다
+4. **index.html 생성** — F 섹션 템플릿 사용
+5. **슬라이드 HTML 파일 순서대로 생성** — 각 슬라이드에 적절한 레이아웃(E 섹션) 선택
+6. **PPTX 생성** — L 섹션 절차에 따라 `python -m claude_ppt.render <outline.json> <output.pptx>` 실행
+7. **품질 체크리스트 검증** — I 섹션의 모든 항목 확인 (HTML + PPTX 양쪽)
+8. **결과 요약 보고** — 생성된 파일 목록(HTML 세트 + outline.json + slides.pptx), 레이아웃 배분, 주의사항
 
 ---
 
@@ -283,6 +291,7 @@ index.html 상세 템플릿은 `references/index-template.md`를 참조할 것.
 
 생성 완료 후 반드시 확인:
 
+### HTML
 - [ ] N개 슬라이드 + index.html 모두 생성
 - [ ] 파일명 `NN-slug.html` 패턴 준수 (NN: 2자리 제로패딩, slug: 영문 kebab-case)
 - [ ] 모든 prev/next 링크가 실제 파일명과 정확히 일치
@@ -295,6 +304,17 @@ index.html 상세 템플릿은 `references/index-template.md`를 참조할 것.
 - [ ] 타이틀에 gradient clip 적용: `background: linear-gradient(...)`, `-webkit-background-clip: text`, `-webkit-text-fill-color: transparent`, `background-clip: text`
 - [ ] container `width: 1280px`, viewport `width=1280`
 - [ ] index.html에 nav 바 없음
+
+### outline.json + PPTX
+- [ ] `outline.json`이 에피소드 폴더에 생성되어 있고, 스키마(`references/pptx-layouts.md`)를 만족
+- [ ] outline의 `slides` 길이 = 생성된 HTML 슬라이드 수
+- [ ] 모든 `slides[].layout` 값이 8개 enum 중 하나 (`hero-cards`, `roadmap`, `comparison-2col`, `step-flow`, `diagram-box`, `grid-2x2`, `three-stage-flow`, `summary-grid`)
+- [ ] 모든 `slides[].section` 값이 `sections[].id` 집합 안에 존재
+- [ ] `slides[].slug`은 영문 kebab-case (HTML 파일명과 일치)
+- [ ] `slides[].n`은 1부터 시작하며 연속 (빈 번호 없음)
+- [ ] `python -m claude_ppt.render` 실행이 종료 코드 0
+- [ ] `slides.pptx` 파일이 생성되었고 0바이트 아님
+- [ ] `three-stage-flow` 사용 시 `stages` 길이가 정확히 3
 
 ---
 
@@ -315,7 +335,7 @@ index.html 상세 템플릿은 `references/index-template.md`를 참조할 것.
 
 ---
 
-## K. 디자인 규칙
+## K. 디자인 규칙 (HTML)
 
 1. **타이틀**: 42~52px, font-weight 900, gradient clip 필수
 2. **서브타이틀**: 있는 경우 16~18px, color `#8b949e`
@@ -324,3 +344,80 @@ index.html 상세 템플릿은 `references/index-template.md`를 참조할 것.
 5. **카드/박스 내 항목 최대 6개** — 오버플로우 절대 방지
 6. **애니메이션**: cardAppear/stepIn 등 등장 애니메이션에 순차 delay (0.1~0.4s 간격)
 7. **마지막 슬라이드(summary)**: glow orb 배경 + 레인보우 gradient 사용 권장
+
+---
+
+## L. PPTX 출력 절차
+
+HTML 슬라이드 세트를 모두 생성한 뒤, 같은 `outline.json`을 입력으로 *편집 가능한 .pptx*를 만든다.
+
+### L-1. outline.json 작성
+
+에피소드 폴더(`{채널}/epNN-슬러그/`)에 `outline.json`을 작성한다. 스키마는 **[`references/pptx-layouts.md`](references/pptx-layouts.md)**의 *outline.json 최상위 스키마* 섹션을 정확히 따른다.
+
+핵심 규칙:
+- `slides[].layout`은 8개 enum 중 하나만 (`hero-cards`, `roadmap`, `comparison-2col`, `step-flow`, `diagram-box`, `grid-2x2`, `three-stage-flow`, `summary-grid`)
+- `slides[].content`는 layout별 스키마를 따라야 함 (`references/pptx-layouts.md` §1~§8 참조)
+- `slides[].n`은 1부터 연속 (HTML 파일명 `NN-slug.html`의 NN과 일치)
+- `slides[].slug`은 HTML 파일명의 slug 부분과 정확히 일치
+- 한국어 텍스트는 그대로 (UTF-8). JSON 인코딩은 `ensure_ascii=False` 권장
+
+### L-2. 변환기 실행
+
+```bash
+python -m claude_ppt.render <에피소드 폴더>/outline.json <에피소드 폴더>/slides.pptx
+```
+
+또는 console script:
+
+```bash
+claude-ppt-render <outline.json> <slides.pptx>
+```
+
+- 종료 코드 0 → 성공. 표준 출력에 `Wrote <경로> (<N> slides)` 메시지
+- 종료 코드 ≠ 0 → 표준 에러에 traceback. 흔한 실패:
+  - `KeyError: 'slides'` — outline에 `slides` 키 누락
+  - `ValueError: Unknown layout: 'xxx'` — layout enum 위반
+  - `ValueError: three-stage-flow expects exactly 3 stages` — 3단계 강제 위반
+
+### L-3. 검증
+
+생성 직후 다음을 확인한다:
+
+```bash
+ls -la <에피소드 폴더>/slides.pptx     # 0바이트 아닌지
+python -c "from pptx import Presentation; p=Presentation('<...>/slides.pptx'); print(len(p.slides))"
+```
+
+슬라이드 수가 outline의 `slides` 길이와 일치해야 한다.
+
+### L-4. 산출물 트리
+
+성공 시 에피소드 폴더 구조:
+
+```
+{채널}/epNN-슬러그/
+├── script.md          (입력)
+├── outline.json       (스킬이 생성한 공통 IR)
+├── slides.pptx        (PowerPoint·Keynote 편집 가능)
+└── slides/
+    ├── index.html     (허브 페이지)
+    ├── 01-slug.html
+    ├── 02-slug.html
+    └── ...
+```
+
+### L-5. 환경 전제
+
+- 프로젝트 루트에서 `pip install -e .` 또는 `uv sync`로 `claude_ppt` 패키지가 설치되어 있어야 함
+- 실행 시 `python` 또는 `uv run python`이 그 환경의 인터프리터를 가리켜야 함
+- 가상환경 미사용 시 `python-pptx` (≥0.6.23) 시스템 설치 필요
+
+### L-6. 실패 시 사용자에게 보고
+
+PPTX 생성이 실패해도 HTML은 이미 성공한 상태. 사용자에게:
+
+1. HTML 산출물은 정상이라고 명시
+2. PPTX 단계의 stderr 메시지를 그대로 인용
+3. 가장 흔한 원인 1~2개를 추측해서 제시 (위 §L-2의 실패 목록 참조)
+4. 수정 방안 (예: outline의 해당 layout/content 수정 후 변환기 재실행)
