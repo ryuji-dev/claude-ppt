@@ -54,10 +54,11 @@ YouTube 영상 요약 텍스트 → **HTML 슬라이드 세트 + 편집 가능�
 ## 5. 커밋 · 브랜치 · PR 규칙
 
 - **브랜치**: 기능 단위 feature branch (`feat/...`, `fix/...`, `chore/...`, `docs/...`).
-- **커밋 메시지**: [Conventional Commits](https://www.conventionalcommits.org/).
-  - `feat: add hero-cards layout renderer`
-  - `test: cover step-flow edge cases`
-  - `docs: clarify outline.json schema`
+- **커밋 메시지**: [Conventional Commits](https://www.conventionalcommits.org/) 형식. 타입 prefix(`feat:`, `fix:`, `chore:`, `docs:`, `test:`, `refactor:`)는 영어 그대로, **본문은 한국어**로 작성.
+  - `feat: hero-cards 레이아웃 렌더러 추가`
+  - `test: step-flow 엣지 케이스 커버`
+  - `docs: outline.json 스키마 설명 보강`
+- **PR 제목·본문도 한국어**. ## Summary, ## Test plan 섹션명은 그대로 사용.
 - **`main` 직접 푸시 금지**. 모든 변경은 PR을 통과한다.
 - PR은 `superpowers:finishing-a-development-branch` 스킬 또는 `gh pr create`로 자동 생성.
 - PR 본문은 ## Summary, ## Test plan 두 섹션을 포함.
@@ -113,7 +114,44 @@ gh pr create --fill
 
 ---
 
-## 9. 모르면 멈추고 물어볼 것
+## 9. 자율 워크플로우 (브랜치 → 커밋 → PR → 머지)
+
+본 레포에서는 사용자가 *각 단계마다 승인을 주지 않아도* 자동으로 진행한다. 사용자가 새 작업을 지시한 시점에서 다음 사이클이 끝까지 굴러간다.
+
+**시작 시 (사용자가 새 작업 지시)**
+1. `git switch main && git pull --ff-only`
+2. `git switch -c <type>/<topic>` — 새 feature 브랜치 (예: `feat/pptx-renderer-skeleton`)
+3. 작업 시작 (TDD 사이클 진행)
+
+**작업 중 (논리 단위마다)**
+- 의미 있는 단위가 끝날 때마다 즉시 `git commit`. 사용자에게 "커밋할까요?" 묻지 않는다.
+- 한 페이즈 안에서 여러 commit 누적 가능 (예: `test: ...`, `feat: ...`, `refactor: ...`)
+
+**완료 시 (페이즈 또는 큰 작업 끝)**
+1. `pytest -q` (있다면) 통과 확인
+2. `git push -u origin <branch>`
+3. `gh pr create --base main --fill` 또는 본문 직접 작성
+4. **즉시 머지**: `gh pr merge --squash --delete-branch` (또는 `--merge`)
+5. `git switch main && git pull --ff-only`
+6. 다음 페이즈가 있으면 1번으로 돌아가 새 브랜치 시작
+
+**언제 *멈추고 물어볼지***
+- 명세 자체에 빈틈이 있을 때 (스펙 결정 사항)
+- 테스트 실패가 *기능적 결함*을 드러낼 때 (단순 문법 오류 X)
+- 외부 시스템에 영향 (API 비용 발생, 외부 알림 발송 등)
+- 명시적 *destructive* 작업 (force push to main, history rewrite, 큰 데이터 삭제)
+
+**언제 *멈추지 말지***
+- "PR 만들었습니다, 머지하시겠어요?" → ❌ 그냥 머지
+- "커밋해도 될까요?" → ❌ 그냥 커밋
+- "다음 페이즈 시작할까요?" → ❌ 그냥 시작
+- "Co-Authored-By 빼도 될까요?" → ❌ 그냥 빼고 진행 (이미 정책으로 명시됨)
+
+이 자동화는 *개인 레포 + 사용자 단독 사용* 가정 하에서만 안전하다. 협업자가 합류하면 §9를 갱신한다.
+
+---
+
+## 10. 모르면 멈추고 물어볼 것
 
 - 입력 텍스트가 양쪽 형태 모두에 안 맞을 때 (정돈된 대본도 거친 노트도 아닐 때)
 - 8개 레이아웃 어디에도 깔끔히 매핑되지 않는 콘텐츠
