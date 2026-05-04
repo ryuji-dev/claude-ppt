@@ -2,3 +2,20 @@
 .vscode/
 .idea/
 *.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+
+# Build artifacts
+dist/
+build/
+
+# Generated presentation outputs (산출물은 별도 폴더)
+*.pptx
+slides/
+outline.json
+!tests/fixtures/*.json
