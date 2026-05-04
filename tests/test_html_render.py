@@ -84,6 +84,29 @@ def test_index_lists_all_slides_with_section_blocks(sample_outline: dict) -> Non
         assert f"section-{section['id']}" in index or section["id"] in index
 
 
+def test_slide_nav_index_link_uses_parent_path(sample_outline: dict) -> None:
+    """슬라이드는 slides/ 하위에 저장되므로 index.html 링크는 '../index.html'이어야 한다."""
+    files = render_html_set(sample_outline)
+    first = sample_outline["slides"][0]
+    html = files[f"{first['n']:02d}-{first['slug']}.html"]
+    assert 'href="../index.html"' in html, "슬라이드 nav-center가 '../index.html'을 가리켜야 함"
+
+
+def test_index_links_use_slides_subdir_prefix(sample_outline: dict) -> None:
+    """index.html → 슬라이드 카드 href는 'slides/NN-slug.html'이어야 한다.
+
+    render_to_dir가 슬라이드를 slides/ 하위에 저장하므로, href에 접두사가 없으면
+    파일 시스템 경로와 어긋나 ERR_FILE_NOT_FOUND가 발생한다.
+    """
+    files = render_html_set(sample_outline)
+    index = files["index.html"]
+    for slide in sample_outline["slides"]:
+        filename = f"{slide['n']:02d}-{slide['slug']}.html"
+        assert f'href="slides/{filename}"' in index, (
+            f"index.html의 슬라이드 링크에 'slides/' 접두사가 빠짐: {filename}"
+        )
+
+
 def test_hero_cards_content_keywords_present(sample_outline: dict) -> None:
     files = render_html_set(sample_outline)
     hero = next(s for s in sample_outline["slides"] if s["layout"] == "hero-cards")

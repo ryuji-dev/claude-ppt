@@ -449,7 +449,7 @@ def _render_nav(idx: int, total: int, prev_file: str | None, next_file: str | No
         '<nav class="slide-nav">\n'
         '  <div class="slide-nav-inner">\n'
         f'    {left}\n'
-        f'    <div class="nav-center"><a href="index.html">{idx:02d} / {total:02d}</a></div>\n'
+        f'    <div class="nav-center"><a href="../index.html">{idx:02d} / {total:02d}</a></div>\n'
         f'    {right}\n'
         '  </div>\n'
         '</nav>'
@@ -594,10 +594,10 @@ def _render_index(outline: dict) -> str:
         nums = [s["n"] for s in section_slides]
         num_range = f"{min(nums):02d}-{max(nums):02d}"
         cards = "\n".join(
-            f'      <a class="card" href="{_slide_filename(s)}" onclick="event.preventDefault(); navigateTo(this.href)">\n'
+            f'      <a class="card" href="slides/{_slide_filename(s)}" onclick="event.preventDefault(); navigateTo(this.href)">\n'
             f'        <span class="card-num">{s["n"]:02d}</span>\n'
             f'        <span class="card-title">{_esc(s["title"])}</span>\n'
-            f'        <span class="card-file">{_slide_filename(s)}</span>\n'
+            f'        <span class="card-file">slides/{_slide_filename(s)}</span>\n'
             f'      </a>'
             for s in section_slides
         )
