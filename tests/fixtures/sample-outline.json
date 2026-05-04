@@ -1,0 +1,23 @@
+{
+  "title": "테스트 프레젠테이션",
+  "channel": "테스트",
+  "episode": "ep00-demo",
+  "sections": [
+    {"id": "intro", "name": "인트로", "color": "#7c3aed"}
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "slug": "intro-hook",
+      "title": "오늘의 훅",
+      "section": "intro",
+      "layout": "hero-cards",
+      "content": {
+        "cards": [
+          {"emoji": "🚀", "label": "빠른 시작", "text": "한 줄 요약 텍스트"},
+          {"emoji": "✨", "label": "쉬운 사용", "text": "두 번째 카드"}
+        ]
+      }
+    }
+  ]
+}
