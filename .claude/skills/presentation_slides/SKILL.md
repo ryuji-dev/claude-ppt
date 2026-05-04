@@ -8,7 +8,7 @@ description: YouTube 영상용 프레젠테이션을 **HTML 슬라이드 세트(
 1. **HTML 슬라이드 세트** — 다크 테마, 개별 `*.html` + `index.html` 허브 페이지. 웹 미리보기·공유용
 2. **편집 가능한 `.pptx`** — 같은 콘텐츠를 PowerPoint·Keynote에서 직접 편집할 수 있는 형태. 발표·다운로드용
 
-두 포맷은 *공통 중간 표현(outline.json)*을 거쳐 생성된다. PPTX는 `claude_ppt` 파이썬 패키지가 결정론적으로 변환한다 (별도 API 키 불필요).
+스킬의 핵심 책임은 **`outline.json` 작성**이다. 그 다음 단일 명령(`python -m claude_ppt.build outline.json <폴더>/`)으로 두 포맷이 결정론적으로 산출된다. **외부 API/LLM 호출 없음 — 완전 무료.** §C/§D/§E의 보일러플레이트는 변환기 안에 박혀 있으니 *손코딩하지 않는다*.
 
 사용자 입력: $ARGUMENTS
 
@@ -278,43 +278,37 @@ index.html 상세 템플릿은 `references/index-template.md`를 참조할 것.
 1. **입력 수집** — A 섹션에 따라 대화형으로 필요 정보 확보
    - 대본 파일이 있으면 파싱해서 슬라이드 계획을 제안
 2. **슬라이드 목록 확정** — 번호, slug, 제목, 섹션, 레이아웃 타입을 표로 정리하고 사용자 확인
-3. **outline.json 생성** — 에피소드 폴더에 공통 중간 표현(IR) 작성. 스키마는 `references/pptx-layouts.md` 참조. HTML과 PPTX가 모두 이 파일을 입력으로 사용한다
-4. **index.html 생성** — F 섹션 템플릿 사용
-5. **슬라이드 HTML 파일 순서대로 생성** — 각 슬라이드에 적절한 레이아웃(E 섹션) 선택
-6. **PPTX 생성** — L 섹션 절차에 따라 `python -m claude_ppt.render <outline.json> <output.pptx>` 실행
-7. **품질 체크리스트 검증** — I 섹션의 모든 항목 확인 (HTML + PPTX 양쪽)
-8. **결과 요약 보고** — 생성된 파일 목록(HTML 세트 + outline.json + slides.pptx), 레이아웃 배분, 주의사항
+3. **outline.json 생성** — 에피소드 폴더에 공통 중간 표현(IR)을 작성. 스키마는 `references/pptx-layouts.md` 참조. HTML과 PPTX가 모두 이 파일을 입력으로 사용한다
+4. **변환기 호출** — L 섹션 절차에 따라 단일 명령으로 HTML 세트 + slides.pptx 동시 산출:
+   ```bash
+   python -m claude_ppt.build <에피소드 폴더>/outline.json <에피소드 폴더>/
+   ```
+   8장의 HTML 보일러플레이트를 손코딩하지 않는다 — 변환기가 §C/§D/§E의 SSOT를 그대로 미러한다
+5. **품질 체크리스트 검증** — I 섹션의 모든 항목 확인 (HTML + PPTX 양쪽)
+6. **결과 요약 보고** — 생성된 파일 목록(HTML 세트 + outline.json + slides.pptx), 레이아웃 배분, 주의사항
 
 ---
 
 ## I. 품질 체크리스트
 
-생성 완료 후 반드시 확인:
+변환기(`claude_ppt.build`)가 보일러플레이트·파일명·네비·스키마를 모두 강제하므로,
+스킬은 *outline.json 작성 단계*와 *변환기 종료 코드*만 확인하면 된다.
 
-### HTML
-- [ ] N개 슬라이드 + index.html 모두 생성
-- [ ] 파일명 `NN-slug.html` 패턴 준수 (NN: 2자리 제로패딩, slug: 영문 kebab-case)
-- [ ] 모든 prev/next 링크가 실제 파일명과 정확히 일치
-- [ ] 첫 슬라이드: 이전 = `<span class="nav-disabled">`, ArrowLeft 리스너 없음
-- [ ] 마지막 슬라이드: 다음 = `<span class="nav-disabled">`, ArrowRight 리스너 없음
-- [ ] 센터 nav에 `NN / TOTAL` 형식 + index.html 링크
-- [ ] 공통 보일러플레이트 동일: body 배경 `#0a0f1a`, Noto Sans KR 폰트, CSS 리셋, nav CSS, fade 애니메이션, `navigateTo()` 함수
-- [ ] index.html 섹션별 색상 코딩 정확 (section-intro, section-1~5, section-outro)
-- [ ] 각 HTML 완전 독립 (외부 CSS/JS 의존 없음, Google Fonts CDN 제외)
-- [ ] 타이틀에 gradient clip 적용: `background: linear-gradient(...)`, `-webkit-background-clip: text`, `-webkit-text-fill-color: transparent`, `background-clip: text`
-- [ ] container `width: 1280px`, viewport `width=1280`
-- [ ] index.html에 nav 바 없음
-
-### outline.json + PPTX
-- [ ] `outline.json`이 에피소드 폴더에 생성되어 있고, 스키마(`references/pptx-layouts.md`)를 만족
-- [ ] outline의 `slides` 길이 = 생성된 HTML 슬라이드 수
-- [ ] 모든 `slides[].layout` 값이 8개 enum 중 하나 (`hero-cards`, `roadmap`, `comparison-2col`, `step-flow`, `diagram-box`, `grid-2x2`, `three-stage-flow`, `summary-grid`)
-- [ ] 모든 `slides[].section` 값이 `sections[].id` 집합 안에 존재
-- [ ] `slides[].slug`은 영문 kebab-case (HTML 파일명과 일치)
+### outline.json (스킬 책임)
+- [ ] 스키마 충족 (`references/pptx-layouts.md` 참조)
 - [ ] `slides[].n`은 1부터 시작하며 연속 (빈 번호 없음)
-- [ ] `python -m claude_ppt.render` 실행이 종료 코드 0
-- [ ] `slides.pptx` 파일이 생성되었고 0바이트 아님
+- [ ] `slides[].slug`은 영문 kebab-case
+- [ ] `slides[].layout`은 8개 enum 중 하나 (`hero-cards`, `roadmap`, `comparison-2col`, `step-flow`, `diagram-box`, `grid-2x2`, `three-stage-flow`, `summary-grid`)
+- [ ] `slides[].section`은 `sections[].id` 집합 안에 존재
 - [ ] `three-stage-flow` 사용 시 `stages` 길이가 정확히 3
+- [ ] 한 프레젠테이션에서 동일 레이아웃을 3번 이상 연속 사용하지 않음 (시각적 단조 방지)
+
+### 변환기 산출물 (`python -m claude_ppt.build` 실행 후)
+- [ ] 종료 코드 0
+- [ ] `slides.pptx` 파일이 생성되었고 0바이트 아님
+- [ ] `index.html` + `slides/NN-slug.html` × N개 모두 생성됨 (개수 = `outline.slides` 길이)
+- [ ] PowerPoint·Keynote에서 `slides.pptx` 열람 가능 (수동, 1회만 확인하면 충분)
+- [ ] 브라우저에서 `index.html`을 열고 ArrowRight/Left로 슬라이드 네비 동작 (수동, 1회만)
 
 ---
 
@@ -347,9 +341,9 @@ index.html 상세 템플릿은 `references/index-template.md`를 참조할 것.
 
 ---
 
-## L. PPTX 출력 절차
+## L. 변환기 호출 (HTML + PPTX 동시 출력)
 
-HTML 슬라이드 세트를 모두 생성한 뒤, 같은 `outline.json`을 입력으로 *편집 가능한 .pptx*를 만든다.
+`outline.json`을 입력으로, 단일 명령으로 HTML 슬라이드 세트와 *편집 가능한 .pptx*를 같은 폴더에 굽는다.
 
 ### L-1. outline.json 작성
 
@@ -364,32 +358,35 @@ HTML 슬라이드 세트를 모두 생성한 뒤, 같은 `outline.json`을 입�
 
 ### L-2. 변환기 실행
 
-```bash
-python -m claude_ppt.render <에피소드 폴더>/outline.json <에피소드 폴더>/slides.pptx
-```
-
-또는 console script:
+**기본**: HTML 세트 + slides.pptx 한 번에:
 
 ```bash
-claude-ppt-render <outline.json> <slides.pptx>
+python -m claude_ppt.build <에피소드 폴더>/outline.json <에피소드 폴더>/
+# 또는 console script:
+claude-ppt-build <outline.json> <output_dir>
 ```
 
-- 종료 코드 0 → 성공. 표준 출력에 `Wrote <경로> (<N> slides)` 메시지
+**HTML만**: `python -m claude_ppt.html_render <outline.json> <output_dir>` (또는 `claude-ppt-html`)
+**PPTX만**: `python -m claude_ppt.render <outline.json> <output.pptx>` (또는 `claude-ppt-render`)
+
+- 종료 코드 0 → 성공. 표준 출력에 산출 파일 수 + 위치 메시지
 - 종료 코드 ≠ 0 → 표준 에러에 traceback. 흔한 실패:
   - `KeyError: 'slides'` — outline에 `slides` 키 누락
   - `ValueError: Unknown layout: 'xxx'` — layout enum 위반
   - `ValueError: three-stage-flow expects exactly 3 stages` — 3단계 강제 위반
+
+§C(HTML 보일러플레이트), §D(네비게이션 바), §F(index.html)의 모든 보일러플레이트는 변환기 안에 동일하게 박혀 있으니 **스킬은 직접 HTML을 손코딩하지 않는다**. 해당 절들은 변환기 스펙 참조용으로만 본다.
 
 ### L-3. 검증
 
 생성 직후 다음을 확인한다:
 
 ```bash
-ls -la <에피소드 폴더>/slides.pptx     # 0바이트 아닌지
+ls -la <에피소드 폴더>/slides.pptx <에피소드 폴더>/index.html <에피소드 폴더>/slides/
 python -c "from pptx import Presentation; p=Presentation('<...>/slides.pptx'); print(len(p.slides))"
 ```
 
-슬라이드 수가 outline의 `slides` 길이와 일치해야 한다.
+슬라이드 수가 outline의 `slides` 길이와 일치해야 한다. HTML 슬라이드 파일도 같은 개수.
 
 ### L-4. 산출물 트리
 
@@ -400,8 +397,8 @@ python -c "from pptx import Presentation; p=Presentation('<...>/slides.pptx'); p
 ├── script.md          (입력)
 ├── outline.json       (스킬이 생성한 공통 IR)
 ├── slides.pptx        (PowerPoint·Keynote 편집 가능)
+├── index.html         (허브 페이지)
 └── slides/
-    ├── index.html     (허브 페이지)
     ├── 01-slug.html
     ├── 02-slug.html
     └── ...
@@ -409,15 +406,15 @@ python -c "from pptx import Presentation; p=Presentation('<...>/slides.pptx'); p
 
 ### L-5. 환경 전제
 
-- 프로젝트 루트에서 `pip install -e .` 또는 `uv sync`로 `claude_ppt` 패키지가 설치되어 있어야 함
-- 실행 시 `python` 또는 `uv run python`이 그 환경의 인터프리터를 가리켜야 함
-- 가상환경 미사용 시 `python-pptx` (≥0.6.23) 시스템 설치 필요
+- 프로젝트 루트에서 `pip install -e ".[dev]"` 또는 `uv sync`로 `claude_ppt` 패키지가 설치되어 있어야 함
+- 실행 시 `python` (또는 `.venv/bin/python`)이 그 환경의 인터프리터를 가리켜야 함
+- 의존성: `python-pptx` (≥0.6.23), `pydantic` (≥2.5). **API 키·외부 LLM 호출 없음.**
 
 ### L-6. 실패 시 사용자에게 보고
 
-PPTX 생성이 실패해도 HTML은 이미 성공한 상태. 사용자에게:
+`build` 단계가 실패하면:
 
-1. HTML 산출물은 정상이라고 명시
-2. PPTX 단계의 stderr 메시지를 그대로 인용
-3. 가장 흔한 원인 1~2개를 추측해서 제시 (위 §L-2의 실패 목록 참조)
+1. 어느 단계(HTML 또는 PPTX)에서 깨졌는지 명시
+2. stderr 메시지를 그대로 인용
+3. 가장 흔한 원인 1~2개를 추측해서 제시 (§L-2의 실패 목록 참조)
 4. 수정 방안 (예: outline의 해당 layout/content 수정 후 변환기 재실행)
