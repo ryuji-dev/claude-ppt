@@ -32,7 +32,7 @@
 - [x] `claude_ppt/layouts/__init__.py` + 디스패처
 - [x] `claude_ppt/layouts/hero_cards.py` — 첫 레이아웃, TDD 사이클 완료
 - [x] `pytest -q` 전체 통과 (4 passed)
-- [ ] PR → 머지 → `phase-1-done` 태그
+- [x] PR #2 → 머지 → `phase-1-done` 태그
 
 ---
 
@@ -49,18 +49,19 @@
 - [x] `tests/fixtures/sample-outline.json` 8개 레이아웃 전체 커버리지로 확장
 - [x] 통합 테스트: `LAYOUTS` 레지스트리 8개 일치 + 픽스처 8개 사용 + 8장 .pptx 산출
 - [x] `pytest -q` → 7 passed
-- [ ] PR → 머지 → `phase-2-done` 태그
+- [x] PR #3 → 머지 → `phase-2-done` 태그
 
 ---
 
-## Phase 3 — outline.json 스키마 안정화
+## Phase 3 — outline.json 스키마 안정화 (Phase 6a로 흡수됨)
 
-- [ ] 브랜치: `feat/outline-schema`
-- [ ] `claude_ppt/schema.py` — pydantic 모델 또는 jsonschema
-- [ ] `render.py`에 스키마 검증 단계 추가 (불일치 시 명확한 에러)
-- [ ] 회귀 테스트: 잘못된 outline 입력 시 검증 실패 확인
-- [ ] `references/pptx-layouts.md`에 스키마 문서화
-- [ ] PR → 머지 → `phase-3-done` 태그
+별도 페이즈로 진행하지 않고 작업이 다른 페이즈로 분산됨:
+
+- [x] `claude_ppt/schema.py` — Pydantic 모델 (Phase 6a, PR #6)
+- [x] `references/pptx-layouts.md`에 스키마 문서화 (Phase 4, PR #4)
+- [x] 회귀 테스트: 잘못된 outline 입력 시 검증 실패 확인 (Phase 1·2 `test_render.py`의 ValueError 테스트로 부분 충족)
+- [→] `render.py`에 스키마 검증 단계 추가 — Phase 7로 이관 (build CLI에서 `Outline.validate_full()` 호출)
+- [—] 별도 `phase-3-done` 태그는 만들지 않음 (작업이 흡수됨)
 
 ---
 
@@ -75,7 +76,7 @@
 - [x] `SKILL.md` §E에서 `pptx-layouts.md` 레퍼런스 가리킴
 - [x] `references/pptx-layouts.md` 신설 — outline.json 최상위 스키마 + 8개 레이아웃별 content 스키마/예시/구현 파일
 - [x] `pytest -q` 회귀 없음 (7 passed)
-- [ ] PR → 머지 → `phase-4-done` 태그
+- [x] PR #4 → 머지 → `phase-4-done` 태그
 
 ---
 
@@ -86,9 +87,9 @@
 - [x] `samples/ep00-demo/outline.json` 8장 레이아웃 모두 사용한 골든 레퍼런스
 - [x] `python -m claude_ppt.render` 실행 → 8장 PPTX 정상 생성 (39KB, 슬라이드 수·제목 일치)
 - [x] `.gitignore`에 `samples/**/outline.json` 예외 추가
-- [ ] PR → 머지 → `phase-5-done` 태그
+- [x] PR #5 → 머지 → `phase-5-done` 태그
 - [ ] (수동) PowerPoint·Keynote에서 텍스트 편집 가능 검증 — 사용자 작업
-- [ ] (수동) 브라우저 HTML 검증은 *Phase 6에서 웹 UI가 HTML을 산출하면* 같이
+- [ ] (수동) 브라우저에서 `index.html` 열고 ←/→ 키 네비 확인 — 사용자 작업 (Phase 6c 변환기 산출)
 
 ---
 
@@ -135,7 +136,7 @@ Claude Code 스킬이 `outline.json`만 작성하면 단일 명령으로 HTML+PP
 - [x] `SKILL.md` 워크플로우 단순화: 8단계 → 6단계 (HTML 손코딩 단계 제거, build 명령 한 줄로 통합)
 - [x] `SKILL.md` §I 품질 체크리스트 단순화 (변환기 자동 강제 항목 제거)
 - [x] `README.md` 전면 재작성 (웹 UI 언급 제거, 스킬 모드 우선, "완전 무료" 강조)
-- [ ] PR → 머지 → `phase-6c-done` 태그
+- [x] PR #8 → 머지 → `phase-6c-done` 태그
 
 ---
 
@@ -143,7 +144,7 @@ Claude Code 스킬이 `outline.json`만 작성하면 단일 명령으로 HTML+PP
 
 - [x] pydantic 모델 도입 (Phase 6a에서 `claude_ppt/schema.py`로 완료)
 - [ ] `references/pptx-layouts.md` 자동 동기화 (현재는 수동 미러)
-- [ ] outline 작성 시 `Outline.validate_full()` 호출 추가 (현재는 LLM 흐름에서만 호출됨, build CLI에서도 호출하도록)
+- [ ] `build`/`render`/`html_render` CLI 진입점에서 `Outline.validate_full()` 호출 추가 (현재는 모델 검증만 수행, 섹션 ID/레이아웃 enum 교차 참조 검증은 호출 없음)
 
 ---
 
