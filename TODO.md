@@ -79,17 +79,58 @@
 
 ---
 
-## Phase 5 — 엔드투엔드 검증
+## Phase 5 — 엔드투엔드 검증 (CLI 흐름)
 
-- [ ] 브랜치: `feat/e2e-validation`
-- [ ] 샘플 `script.md` 작성 (`samples/ep00-demo/script.md`, 인트로 + 섹션 2 + 마무리)
-- [ ] Claude Code 세션에서 스킬 트리거 → 산출물 확인
-- [ ] 브라우저: HTML 키보드 네비, 페이지 전환 정상
-- [ ] PowerPoint·Keynote: PPTX 텍스트 편집 가능 확인
-- [ ] HTML과 PPTX의 *메시지·구조 일치* 수동 확인 (1:1 픽셀 매칭은 목표 X)
-- [ ] 발견된 이슈 → GitHub Issues로 등록
+- [x] 브랜치: `feat/e2e-validation`
+- [x] 샘플 `samples/ep00-demo/script.md` 작성 (인트로 + 섹션 2개 + 마무리)
+- [x] `samples/ep00-demo/outline.json` 8장 레이아웃 모두 사용한 골든 레퍼런스
+- [x] `python -m claude_ppt.render` 실행 → 8장 PPTX 정상 생성 (39KB, 슬라이드 수·제목 일치)
+- [x] `.gitignore`에 `samples/**/outline.json` 예외 추가
 - [ ] PR → 머지 → `phase-5-done` 태그
-- [ ] `v0.1.0` 릴리스 (`gh release create v0.1.0`)
+- [ ] (수동) PowerPoint·Keynote에서 텍스트 편집 가능 검증 — 사용자 작업
+- [ ] (수동) 브라우저 HTML 검증은 *Phase 6에서 웹 UI가 HTML을 산출하면* 같이
+
+---
+
+## Phase 6 — 웹 UI (Streamlit + Claude API)
+
+방향 전환: GPT/Gemini/Claude.ai처럼 **문서 업로드 + 텍스트 입력 → HTML/PPTX 다운로드** 웹 인터페이스.
+스택: Streamlit + Anthropic SDK + 기존 `claude_ppt` 변환기 + 신규 Python HTML 렌더러.
+
+### Phase 6a — Streamlit 골격 + PPTX 출력 (MVP)
+
+- [ ] 브랜치: `feat/web-ui-pptx`
+- [ ] `pyproject.toml`에 `streamlit`, `anthropic` 의존성 추가
+- [ ] `app.py` Streamlit 진입점 — 텍스트 입력 + 파일 업로드 + 미리보기 + PPTX 다운로드
+- [ ] `claude_ppt/llm.py` — Anthropic SDK로 텍스트 → outline.json 변환. 시스템 프롬프트는 `pptx-layouts.md`의 8개 스키마 명시
+- [ ] API 키 처리 — `.env` 또는 사이드바 입력 (보안: 세션 스코프, 디스크 저장 금지)
+- [ ] 에러 처리 — 모델이 잘못된 JSON을 뱉을 때, 레이아웃 enum 위반 시 재시도
+- [ ] 로컬 실행 가이드: `streamlit run app.py` → `http://localhost:8501`
+- [ ] PR → 머지 → `phase-6a-done` 태그
+
+### Phase 6b — HTML 렌더링 + 다운로드
+
+- [ ] 브랜치: `feat/web-ui-html`
+- [ ] `claude_ppt/html_render.py` — outline.json → HTML 슬라이드 세트. SKILL.md §C/§D/§E 로직을 Python으로 포팅
+- [ ] 레이아웃 8개 각각에 대해 jinja2 템플릿 또는 함수 (CSS는 SKILL.md §B/§C와 동일)
+- [ ] index.html 생성 (섹션 색상 코딩)
+- [ ] 슬라이드 간 prev/next 네비게이션 + ArrowLeft/Right 키 핸들러
+- [ ] Streamlit 앱에서 zip 다운로드 + 인앱 미리보기(iframe)
+- [ ] 회귀 테스트 — `samples/ep00-demo/outline.json` → HTML+PPTX 둘 다 생성 → 검증
+- [ ] PR → 머지 → `phase-6b-done` 태그
+
+### Phase 6c — 배포 옵션 (백로그)
+
+- [ ] Dockerfile (선택)
+- [ ] 호스팅(Vercel/Render/Streamlit Cloud) 검토 — *현재 단계에서는 보류*
+
+---
+
+## Phase 7 — outline.json 스키마 안정화 (구 Phase 3, 후순위)
+
+- [ ] pydantic 모델 도입
+- [ ] LLM 응답 검증 강화 (Phase 6에서 실패 패턴 본 뒤 결정)
+- [ ] `references/pptx-layouts.md` 자동 동기화
 
 ---
 
@@ -99,3 +140,4 @@
 - [ ] PPTX 슬라이드 마스터 템플릿 도입 (현재는 빈 슬라이드 + 도형 직접 생성)
 - [ ] 다국어 지원 (현재 한국어 고정)
 - [ ] PPTX → HTML 역변환 (PowerPoint에서 편집한 결과를 HTML로 동기화)
+- [ ] `v0.1.0` 릴리스 — Phase 6b 머지 후

@@ -1,0 +1,147 @@
+{
+  "title": "claude-ppt 데모: 1분 만에 이해하기",
+  "channel": "samples",
+  "episode": "ep00-demo",
+  "sections": [
+    {"id": "intro", "name": "인트로", "color": "#7c3aed"},
+    {"id": "section-1", "name": "문제", "color": "#38bdf8"},
+    {"id": "section-2", "name": "동작", "color": "#34d399"},
+    {"id": "outro", "name": "마무리", "color": "#e879f9"}
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "slug": "intro-hook",
+      "title": "오늘의 핵심 3가지",
+      "section": "intro",
+      "layout": "hero-cards",
+      "content": {
+        "cards": [
+          {"emoji": "⚡", "label": "빠름", "text": "한 번 붙여넣고 끝"},
+          {"emoji": "🤖", "label": "자동", "text": "Claude가 구조화"},
+          {"emoji": "✏️", "label": "편집 가능", "text": "PowerPoint에서 그대로"}
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "slug": "roadmap",
+      "title": "오늘의 로드맵",
+      "section": "intro",
+      "layout": "roadmap",
+      "content": {
+        "steps": [
+          {"label": "문제 정의"},
+          {"label": "도구 비교"},
+          {"label": "설치"},
+          {"label": "데모"},
+          {"label": "정리"}
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "slug": "compare",
+      "title": "기존 방식 vs claude-ppt",
+      "section": "section-1",
+      "layout": "comparison-2col",
+      "content": {
+        "left": {
+          "title": "기존",
+          "items": [
+            "대본을 손으로 옮김",
+            "디자인을 매번 새로",
+            "포맷 일관성 ↓",
+            "반나절 소요"
+          ]
+        },
+        "right": {
+          "title": "claude-ppt",
+          "items": [
+            "대본 붙여넣기 한 번",
+            "다크 테마 자동 적용",
+            "8개 레이아웃 일관",
+            "1분 내 완료"
+          ]
+        }
+      }
+    },
+    {
+      "n": 4,
+      "slug": "install",
+      "title": "설치 3단계",
+      "section": "section-2",
+      "layout": "step-flow",
+      "content": {
+        "steps": [
+          {"title": "다운로드", "description": "git clone + uv sync"},
+          {"title": "인증", "description": "GitHub SSH 키 등록 (이미 있다면 스킵)"},
+          {"title": "첫 실행", "description": "Claude Code에서 스킬 트리거"}
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "slug": "architecture",
+      "title": "동작 원리",
+      "section": "section-2",
+      "layout": "diagram-box",
+      "content": {
+        "center": {"label": "outline.json"},
+        "nodes": [
+          {"label": "script.md\n(입력)"},
+          {"label": "Claude Code\n(스킬)"},
+          {"label": "HTML 렌더러\n(스킬 직접)"},
+          {"label": "claude_ppt\n(파이썬)"}
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "slug": "features",
+      "title": "핵심 기능 4가지",
+      "section": "section-2",
+      "layout": "grid-2x2",
+      "content": {
+        "cards": [
+          {"emoji": "⚡", "title": "빠름", "description": "1분 내 변환"},
+          {"emoji": "🛡️", "title": "안전", "description": "API 키 불필요"},
+          {"emoji": "🎨", "title": "예쁨", "description": "다크 테마 통일"},
+          {"emoji": "🧩", "title": "확장성", "description": "8개 레이아웃"}
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "slug": "evolution",
+      "title": "발전 단계",
+      "section": "section-2",
+      "layout": "three-stage-flow",
+      "content": {
+        "stages": [
+          {"title": "기본", "description": "HTML만 생성"},
+          {"title": "표준", "description": "PPTX까지 동시 생성"},
+          {"title": "고급", "description": "스키마 검증 + 자동화"}
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "slug": "summary",
+      "title": "오늘의 정리",
+      "section": "outro",
+      "layout": "summary-grid",
+      "content": {
+        "cards": [
+          {"label": "01", "text": "문제 정의"},
+          {"label": "02", "text": "도구 비교"},
+          {"label": "03", "text": "설치 3단계"},
+          {"label": "04", "text": "outline.json"},
+          {"label": "05", "text": "8개 레이아웃"},
+          {"label": "06", "text": "발전 단계"}
+        ],
+        "conclusion": "다음 영상에서 실제 시리즈로 만나요"
+      }
+    }
+  ]
+}
