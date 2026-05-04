@@ -4,12 +4,28 @@ from typing import Callable
 
 from pptx.slide import Slide
 
-from . import hero_cards
+from . import (
+    comparison_2col,
+    diagram_box,
+    grid_2x2,
+    hero_cards,
+    roadmap,
+    step_flow,
+    summary_grid,
+    three_stage_flow,
+)
 
 LayoutRenderer = Callable[[Slide, dict, str], None]
 
 LAYOUTS: dict[str, LayoutRenderer] = {
     "hero-cards": hero_cards.render,
+    "roadmap": roadmap.render,
+    "comparison-2col": comparison_2col.render,
+    "step-flow": step_flow.render,
+    "diagram-box": diagram_box.render,
+    "grid-2x2": grid_2x2.render,
+    "three-stage-flow": three_stage_flow.render,
+    "summary-grid": summary_grid.render,
 }
 
 
