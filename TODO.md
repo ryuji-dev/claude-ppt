@@ -66,12 +66,15 @@
 
 ## Phase 4 — SKILL.md 확장
 
-- [ ] 브랜치: `feat/skill-pptx-output`
-- [ ] `SKILL.md`에 §L. PPTX 출력 절차 추가
-- [ ] outline.json 스키마 문서화 (스킬이 어떤 형태로 산출해야 하는지)
-- [ ] 파이썬 호출 흐름 명시 (`python -m claude_ppt.render ...`)
-- [ ] `references/pptx-layouts.md` — 8개 레이아웃별 PPTX 도형 매핑
-- [ ] §I 품질 체크리스트에 PPTX 항목 추가
+- [x] 브랜치: `feat/skill-pptx-output`
+- [x] `SKILL.md` frontmatter description 갱신 (PPTX 트리거 키워드 + 산출물 설명)
+- [x] `SKILL.md` 인트로 단락 갱신 (HTML + PPTX 동시 생성 명시)
+- [x] `SKILL.md` §H 워크플로우에 outline.json 작성 + PPTX 생성 단계 삽입 (6 → 8단계)
+- [x] `SKILL.md` §L PPTX 출력 절차 신설 (L-1 outline.json 작성 / L-2 변환기 실행 / L-3 검증 / L-4 산출물 트리 / L-5 환경 전제 / L-6 실패 보고)
+- [x] `SKILL.md` §I 품질 체크리스트에 PPTX 항목 추가 (HTML / outline.json + PPTX 두 묶음)
+- [x] `SKILL.md` §E에서 `pptx-layouts.md` 레퍼런스 가리킴
+- [x] `references/pptx-layouts.md` 신설 — outline.json 최상위 스키마 + 8개 레이아웃별 content 스키마/예시/구현 파일
+- [x] `pytest -q` 회귀 없음 (7 passed)
 - [ ] PR → 머지 → `phase-4-done` 태그
 
 ---
