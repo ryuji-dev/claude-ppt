@@ -109,31 +109,41 @@
 - [x] LLM 모듈 회귀 테스트 10개 (mock client)
 - [x] `pytest -q` → 17 passed (회귀 없음)
 - [x] README.md 웹 UI 우선으로 재작성
-- [ ] PR → 머지 → `phase-6a-done` 태그
+- [x] PR #6 → 머지 → `phase-6a-done` 태그
 
-### Phase 6b — HTML 렌더링 + 다운로드
+### Phase 6b — HTML 렌더러 (Python 모듈 + zip 다운로드)
 
-- [ ] 브랜치: `feat/web-ui-html`
-- [ ] `claude_ppt/html_render.py` — outline.json → HTML 슬라이드 세트. SKILL.md §C/§D/§E 로직을 Python으로 포팅
-- [ ] 레이아웃 8개 각각에 대해 jinja2 템플릿 또는 함수 (CSS는 SKILL.md §B/§C와 동일)
-- [ ] index.html 생성 (섹션 색상 코딩)
-- [ ] 슬라이드 간 prev/next 네비게이션 + ArrowLeft/Right 키 핸들러
-- [ ] Streamlit 앱에서 zip 다운로드 + 인앱 미리보기(iframe)
-- [ ] 회귀 테스트 — `samples/ep00-demo/outline.json` → HTML+PPTX 둘 다 생성 → 검증
-- [ ] PR → 머지 → `phase-6b-done` 태그
+- [x] 브랜치: `feat/web-ui-html`
+- [x] `claude_ppt/html_render.py` — outline.json → `{filename: html}`. SKILL.md §C/§D/§F 보일러플레이트 미러
+- [x] 8개 레이아웃 함수 + 공통 base CSS + 레이아웃별 CSS 상수
+- [x] index.html 생성 (섹션 색상 코딩, 4열 그리드)
+- [x] 슬라이드 prev/next 네비 + 첫·끝 슬라이드 경계 처리 + ArrowLeft/Right 키 핸들러
+- [x] 회귀 테스트 9개 (전체 26 passed)
+- [x] PR #7 → 머지 → `phase-6b-done` 태그
 
-### Phase 6c — 배포 옵션 (백로그)
+### Phase 6c — 무료 경로 회귀: 웹 UI 제거 + 변환기 통합 진입점
 
-- [ ] Dockerfile (선택)
-- [ ] 호스팅(Vercel/Render/Streamlit Cloud) 검토 — *현재 단계에서는 보류*
+비용 발생 없는 사용 흐름으로 회귀. Streamlit 웹 UI를 제거하고
+Claude Code 스킬이 `outline.json`만 작성하면 단일 명령으로 HTML+PPTX가 산출되도록.
+
+- [x] 브랜치: `chore/remove-web-ui`
+- [x] `claude_ppt/html_render.py`에 `render_to_dir()` + CLI 진입점 (`python -m claude_ppt.html_render`)
+- [x] `claude_ppt/build.py` 신설 — HTML + PPTX 한 번에 (`python -m claude_ppt.build`)
+- [x] 회귀 테스트 4개 추가 (build, build CLI, render_to_dir, html CLI)
+- [x] `app.py`, `claude_ppt/llm.py`, `tests/test_llm.py` 삭제
+- [x] `pyproject.toml`: `anthropic`, `streamlit`, `[web]` extras 제거. console scripts에 `claude-ppt-html`, `claude-ppt-build` 추가
+- [x] `SKILL.md` 워크플로우 단순화: 8단계 → 6단계 (HTML 손코딩 단계 제거, build 명령 한 줄로 통합)
+- [x] `SKILL.md` §I 품질 체크리스트 단순화 (변환기 자동 강제 항목 제거)
+- [x] `README.md` 전면 재작성 (웹 UI 언급 제거, 스킬 모드 우선, "완전 무료" 강조)
+- [ ] PR → 머지 → `phase-6c-done` 태그
 
 ---
 
 ## Phase 7 — outline.json 스키마 안정화 (구 Phase 3, 후순위)
 
-- [ ] pydantic 모델 도입
-- [ ] LLM 응답 검증 강화 (Phase 6에서 실패 패턴 본 뒤 결정)
-- [ ] `references/pptx-layouts.md` 자동 동기화
+- [x] pydantic 모델 도입 (Phase 6a에서 `claude_ppt/schema.py`로 완료)
+- [ ] `references/pptx-layouts.md` 자동 동기화 (현재는 수동 미러)
+- [ ] outline 작성 시 `Outline.validate_full()` 호출 추가 (현재는 LLM 흐름에서만 호출됨, build CLI에서도 호출하도록)
 
 ---
 
@@ -143,4 +153,4 @@
 - [ ] PPTX 슬라이드 마스터 템플릿 도입 (현재는 빈 슬라이드 + 도형 직접 생성)
 - [ ] 다국어 지원 (현재 한국어 고정)
 - [ ] PPTX → HTML 역변환 (PowerPoint에서 편집한 결과를 HTML로 동기화)
-- [ ] `v0.1.0` 릴리스 — Phase 6b 머지 후
+- [ ] `v0.1.0` 릴리스 — Phase 6c 머지 후
