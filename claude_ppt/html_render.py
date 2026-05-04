@@ -11,8 +11,12 @@ PPTX 렌더러와 동일한 outline.json IR을 입력으로 받아, 다크 테�
 
 from __future__ import annotations
 
+import argparse
 import html as _html
-from typing import Callable
+import json
+import sys
+from pathlib import Path
+from typing import Callable, Mapping
 
 # === 공통 보일러플레이트 ====================================================
 
@@ -639,7 +643,7 @@ def _render_index(outline: dict) -> str:
 
 # === 공개 API ===============================================================
 
-def render_html_set(outline: dict) -> dict[str, str]:
+def render_html_set(outline: Mapping) -> dict[str, str]:
     """outline.json (dict 또는 Outline.model_dump 결과) → {filename: html} 매핑.
 
     `index.html` + `NN-slug.html` × len(slides)를 산출.
@@ -655,3 +659,39 @@ def render_html_set(outline: dict) -> dict[str, str]:
 
     files["index.html"] = _render_index(outline)
     return files
+
+
+def render_to_dir(outline: Mapping, output_dir: str | Path) -> Path:
+    """HTML 세트를 디렉토리에 기록. index.html은 루트, 나머지는 `slides/`."""
+    output_dir = Path(output_dir)
+    slides_dir = output_dir / "slides"
+    slides_dir.mkdir(parents=True, exist_ok=True)
+
+    files = render_html_set(outline)
+    for filename, html in files.items():
+        target = output_dir / filename if filename == "index.html" else slides_dir / filename
+        target.write_text(html, encoding="utf-8")
+    return output_dir
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        prog="claude-ppt-html",
+        description="Render outline.json into a dark-theme HTML slide set.",
+    )
+    parser.add_argument("outline", type=Path, help="Path to outline.json")
+    parser.add_argument(
+        "output_dir",
+        type=Path,
+        help="Directory to write index.html + slides/*.html (created if missing)",
+    )
+    args = parser.parse_args(argv)
+
+    outline = json.loads(args.outline.read_text(encoding="utf-8"))
+    written = render_to_dir(outline, args.output_dir)
+    print(f"Wrote {1 + len(outline['slides'])} HTML files under {written}/")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
