@@ -99,13 +99,16 @@
 
 ### Phase 6a — Streamlit 골격 + PPTX 출력 (MVP)
 
-- [ ] 브랜치: `feat/web-ui-pptx`
-- [ ] `pyproject.toml`에 `streamlit`, `anthropic` 의존성 추가
-- [ ] `app.py` Streamlit 진입점 — 텍스트 입력 + 파일 업로드 + 미리보기 + PPTX 다운로드
-- [ ] `claude_ppt/llm.py` — Anthropic SDK로 텍스트 → outline.json 변환. 시스템 프롬프트는 `pptx-layouts.md`의 8개 스키마 명시
-- [ ] API 키 처리 — `.env` 또는 사이드바 입력 (보안: 세션 스코프, 디스크 저장 금지)
-- [ ] 에러 처리 — 모델이 잘못된 JSON을 뱉을 때, 레이아웃 enum 위반 시 재시도
-- [ ] 로컬 실행 가이드: `streamlit run app.py` → `http://localhost:8501`
+- [x] 브랜치: `feat/web-ui-pptx`
+- [x] `pyproject.toml`에 `streamlit` (web extras), `anthropic`, `pydantic` 의존성 추가
+- [x] `claude_ppt/schema.py` — Pydantic Outline 모델 (필드 검증 + 슬라이드 번호 연속성 + 레이아웃 enum + 섹션 ID 일관성)
+- [x] `claude_ppt/llm.py` — Anthropic SDK로 텍스트 → outline.json 변환. 시스템 프롬프트에 `pptx-layouts.md` 임베드 + `cache_control` ephemeral로 90% 비용 절감
+- [x] `app.py` Streamlit 진입점 — 텍스트 입력 + 파일 업로드 + 메타데이터 + outline 미리보기 + .pptx/outline.json 다운로드
+- [x] API 키 처리 — 사이드바 password 입력, 환경변수 fallback, 세션 메모리만 사용 (디스크 저장 X)
+- [x] 마크다운 펜스(```json) 자동 제거
+- [x] LLM 모듈 회귀 테스트 10개 (mock client)
+- [x] `pytest -q` → 17 passed (회귀 없음)
+- [x] README.md 웹 UI 우선으로 재작성
 - [ ] PR → 머지 → `phase-6a-done` 태그
 
 ### Phase 6b — HTML 렌더링 + 다운로드
