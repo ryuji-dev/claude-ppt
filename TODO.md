@@ -38,18 +38,18 @@
 
 ## Phase 2 — 나머지 레이아웃 7개
 
-각 레이아웃은 *독립 PR* 또는 *작은 묶음 PR*로. 병렬 작업 가능.
-
-- [ ] `roadmap.py` + 테스트
-- [ ] `comparison_2col.py` + 테스트
-- [ ] `step_flow.py` + 테스트
-- [ ] `diagram_box.py` + 테스트
-- [ ] `grid_2x2.py` + 테스트
-- [ ] `three_stage_flow.py` + 테스트
-- [ ] `summary_grid.py` + 테스트
-- [ ] `tests/fixtures/sample-outline.json` 확장 (8개 모두 포함)
-- [ ] 통합 테스트: 8장짜리 outline → 8장 .pptx 산출
-- [ ] `phase-2-done` 태그
+- [x] `_common.py` 분리 — 타이틀·카드 헬퍼 공유
+- [x] `roadmap.py` + 등록
+- [x] `comparison_2col.py` + 등록
+- [x] `step_flow.py` + 등록
+- [x] `diagram_box.py` + 등록 (중앙↔하위 노드 커넥터 포함)
+- [x] `grid_2x2.py` + 등록 (4개=2x2, 5~6개=3x2 자동)
+- [x] `three_stage_flow.py` + 등록 (정확히 3단계 강제, 화살표 커넥터 포함)
+- [x] `summary_grid.py` + 등록 (6개 카드 + 결론 박스)
+- [x] `tests/fixtures/sample-outline.json` 8개 레이아웃 전체 커버리지로 확장
+- [x] 통합 테스트: `LAYOUTS` 레지스트리 8개 일치 + 픽스처 8개 사용 + 8장 .pptx 산출
+- [x] `pytest -q` → 7 passed
+- [ ] PR → 머지 → `phase-2-done` 태그
 
 ---
 

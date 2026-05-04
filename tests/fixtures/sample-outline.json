@@ -1,14 +1,17 @@
 {
-  "title": "테스트 프레젠테이션",
+  "title": "전체 레이아웃 데모",
   "channel": "테스트",
   "episode": "ep00-demo",
   "sections": [
-    {"id": "intro", "name": "인트로", "color": "#7c3aed"}
+    {"id": "intro", "name": "인트로", "color": "#7c3aed"},
+    {"id": "section-1", "name": "섹션 1", "color": "#38bdf8"},
+    {"id": "section-2", "name": "섹션 2", "color": "#34d399"},
+    {"id": "outro", "name": "마무리", "color": "#e879f9"}
   ],
   "slides": [
     {
       "n": 1,
-      "slug": "intro-hook",
+      "slug": "hero",
       "title": "오늘의 훅",
       "section": "intro",
       "layout": "hero-cards",
@@ -17,6 +20,110 @@
           {"emoji": "🚀", "label": "빠른 시작", "text": "한 줄 요약 텍스트"},
           {"emoji": "✨", "label": "쉬운 사용", "text": "두 번째 카드"}
         ]
+      }
+    },
+    {
+      "n": 2,
+      "slug": "roadmap",
+      "title": "에피소드 로드맵",
+      "section": "intro",
+      "layout": "roadmap",
+      "content": {
+        "steps": [
+          {"label": "문제 정의"},
+          {"label": "도구 비교"},
+          {"label": "설치"},
+          {"label": "데모"},
+          {"label": "정리"}
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "slug": "compare",
+      "title": "기존 vs 새로운 방식",
+      "section": "section-1",
+      "layout": "comparison-2col",
+      "content": {
+        "left": {"title": "Before", "items": ["수동 작업", "느린 피드백", "재작업 잦음"]},
+        "right": {"title": "After", "items": ["자동화", "즉시 검증", "한 번에 OK"]}
+      }
+    },
+    {
+      "n": 4,
+      "slug": "install",
+      "title": "설치 절차",
+      "section": "section-1",
+      "layout": "step-flow",
+      "content": {
+        "steps": [
+          {"title": "다운로드", "description": "공식 사이트에서 받기"},
+          {"title": "인증", "description": "API 키 등록"},
+          {"title": "첫 실행", "description": "샘플 명령어로 검증"}
+        ]
+      }
+    },
+    {
+      "n": 5,
+      "slug": "architecture",
+      "title": "시스템 구조",
+      "section": "section-2",
+      "layout": "diagram-box",
+      "content": {
+        "center": {"label": "코어 엔진"},
+        "nodes": [
+          {"label": "입력 파서"},
+          {"label": "스토리지"},
+          {"label": "렌더러"},
+          {"label": "API"}
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "slug": "features",
+      "title": "주요 기능",
+      "section": "section-2",
+      "layout": "grid-2x2",
+      "content": {
+        "cards": [
+          {"emoji": "⚡", "title": "빠름", "description": "1초 내 응답"},
+          {"emoji": "🛡️", "title": "안전", "description": "샌드박스 격리"},
+          {"emoji": "🎨", "title": "예쁨", "description": "다크 테마"},
+          {"emoji": "🧩", "title": "확장성", "description": "플러그인 지원"}
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "slug": "evolution",
+      "title": "발전 단계",
+      "section": "section-2",
+      "layout": "three-stage-flow",
+      "content": {
+        "stages": [
+          {"title": "기본", "description": "최소 기능"},
+          {"title": "표준", "description": "상용 수준"},
+          {"title": "고급", "description": "엔터프라이즈"}
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "slug": "summary",
+      "title": "오늘의 정리",
+      "section": "outro",
+      "layout": "summary-grid",
+      "content": {
+        "cards": [
+          {"label": "01", "text": "문제 정의"},
+          {"label": "02", "text": "도구 선정"},
+          {"label": "03", "text": "설치"},
+          {"label": "04", "text": "구조 이해"},
+          {"label": "05", "text": "실전 데모"},
+          {"label": "06", "text": "회고"}
+        ],
+        "conclusion": "다음 영상에서 계속됩니다"
       }
     }
   ]
