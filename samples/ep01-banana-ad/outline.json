@@ -1,0 +1,147 @@
+{
+  "title": "클릭 한 번에 TV CF급 광고 — AI 광고 도구 빠나나",
+  "channel": "samples",
+  "episode": "ep01-banana-ad",
+  "sections": [
+    {"id": "intro", "name": "인트로", "color": "#7c3aed"},
+    {"id": "section-1", "name": "AI 광고 사례", "color": "#38bdf8"},
+    {"id": "section-2", "name": "동작 원리·사용법", "color": "#34d399"},
+    {"id": "outro", "name": "마무리", "color": "#e879f9"}
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "slug": "intro-hook",
+      "title": "클릭 한 번에 TV CF급 광고",
+      "section": "intro",
+      "layout": "hero-cards",
+      "content": {
+        "cards": [
+          {"emoji": "⚡", "label": "빠름", "text": "2~3번 클릭으로 15초 광고 완성"},
+          {"emoji": "💡", "label": "창의", "text": "약점도 강점으로 뒤집는 AI 발상"},
+          {"emoji": "💸", "label": "저렴", "text": "기획자·촬영팀 없이 제작"}
+        ]
+      }
+    },
+    {
+      "n": 2,
+      "slug": "roadmap",
+      "title": "오늘의 흐름",
+      "section": "intro",
+      "layout": "roadmap",
+      "content": {
+        "steps": [
+          {"label": "AI 광고 사례"},
+          {"label": "발상 전환"},
+          {"label": "동작 원리"},
+          {"label": "사용 4단계"}
+        ]
+      }
+    },
+    {
+      "n": 3,
+      "slug": "ad-cases",
+      "title": "AI가 만든 광고 사례 4선",
+      "section": "section-1",
+      "layout": "grid-2x2",
+      "content": {
+        "cards": [
+          {"emoji": "🧺", "title": "세탁 배달", "description": "터치 한 번이면 끝"},
+          {"emoji": "🧳", "title": "여행 가방", "description": "모든 여정의 동반자"},
+          {"emoji": "🥤", "title": "한일 블렌더", "description": "이게 내 여름 소리야"},
+          {"emoji": "☕", "title": "스타벅스 피지오", "description": "시원함과 자유로움"}
+        ]
+      }
+    },
+    {
+      "n": 4,
+      "slug": "weakness-to-strength",
+      "title": "약점을 강점으로 — 블렌더 소음의 반전",
+      "section": "section-1",
+      "layout": "comparison-2col",
+      "content": {
+        "left": {
+          "title": "보통 광고",
+          "items": [
+            "소음은 숨겨야 할 약점",
+            "조용함을 강조해야 한다는 통념",
+            "기능 스펙 위주의 메시지"
+          ]
+        },
+        "right": {
+          "title": "AI 에이전트의 발상",
+          "items": [
+            "소음을 즐기는 주인공 등장",
+            "이게 내 여름 소리야",
+            "감성 포인트로 완벽한 반전"
+          ]
+        }
+      }
+    },
+    {
+      "n": 5,
+      "slug": "agent-elements",
+      "title": "AI 에이전트가 한 번에 구상하는 것",
+      "section": "section-2",
+      "layout": "diagram-box",
+      "content": {
+        "center": {"label": "AI 광고 에이전트"},
+        "nodes": [
+          {"label": "콘셉트\n메시지"},
+          {"label": "미장센\n라이팅"},
+          {"label": "배우\n선정"},
+          {"label": "배경음악\n사운드"},
+          {"label": "카메라\n무빙"},
+          {"label": "컷 전환\n속도"}
+        ]
+      }
+    },
+    {
+      "n": 6,
+      "slug": "usage-steps",
+      "title": "사용 4단계",
+      "section": "section-2",
+      "layout": "step-flow",
+      "content": {
+        "steps": [
+          {"title": "광고 설정", "description": "제품 이미지·특징 입력 → 반드시 저장 클릭"},
+          {"title": "템플릿 선택", "description": "룩·분위기·라이팅 — 구도는 신경 안 써도 OK"},
+          {"title": "스토리보드 자동 생성", "description": "에이전트가 15초 TV CF 구성"},
+          {"title": "영상 제작", "description": "스토리보드 확인 후 최종 영상 출력"}
+        ]
+      }
+    },
+    {
+      "n": 7,
+      "slug": "service-ad-flow",
+      "title": "제품 없는 서비스도 OK",
+      "section": "section-2",
+      "layout": "three-stage-flow",
+      "content": {
+        "stages": [
+          {"title": "서비스 설명 입력", "description": "예: 빠나나 세차 서비스"},
+          {"title": "AI 컨셉 제안", "description": "누워서도 세차 완료 같은 카피 자동 생성"},
+          {"title": "영상 자동 제작", "description": "보이스오버·영상 아이디어까지 한 번에"}
+        ]
+      }
+    },
+    {
+      "n": 8,
+      "slug": "summary",
+      "title": "오늘의 정리",
+      "section": "outro",
+      "layout": "summary-grid",
+      "content": {
+        "cards": [
+          {"label": "01", "text": "광고 사례 4선"},
+          {"label": "02", "text": "약점→강점 반전"},
+          {"label": "03", "text": "에이전트가 모든 요소 구상"},
+          {"label": "04", "text": "사용 4단계"},
+          {"label": "05", "text": "서비스 광고도 가능"},
+          {"label": "06", "text": "기획·제작 비용 절감"}
+        ],
+        "conclusion": "기획·인력·예산 없어도 전문가급 광고 — AI가 대신 만든다"
+      }
+    }
+  ]
+}
